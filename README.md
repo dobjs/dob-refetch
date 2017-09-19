@@ -2,6 +2,10 @@
 
 dob-refetch 是基于 dob 封装的 dob 的一种实践方案。dob-refetch 类型完美，请求方式简单轻便。
 
+[![npm version](https://badge.fury.io/js/dob-refetch.png)](https://badge.fury.io/js/dob-refetch)
+[![npm downloads](https://img.shields.io/npm/dt/dob-refetch.svg?style=flat-square)](https://www.npmjs.com/package/dob-refetch)
+
+
 ## install
 
 ```sh
@@ -9,6 +13,13 @@ $ npm i -S dob-refetch
 ```
 
 ## usage
+
+### 引用方式
+
+```typescript
+import connect, { BaseModel, BaseStore,
+  Provider, observable, useDebug } from 'dob-refetch';
+```
 
 ### Store
 
@@ -156,3 +167,12 @@ ReactDOM.render(
 ```
 
 ## devtool
+
+```typescript
+useDebug();
+```
+
+如图：
+
+![图片](https://img.alicdn.com/tfs/TB1UuB7aWagSKJjy0FgXXcRqFXa-1206-134.png)
+
