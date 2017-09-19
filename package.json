@@ -1,0 +1,51 @@
+{
+  "name": "dob-refetch",
+  "version": "0.1.0",
+  "description": "",
+  "main": "./index.js",
+  "typings": "./index.ts",
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc",
+    "prepublish": "npm run build",
+    "demo": "webpack-dev-server  --progress --port 4000  --colors --content-base demo --inline --config demo/webpack.config.js",
+    "test": "NODE_ENV=test karma start test/karma.conf.js --single-run"
+  },
+  "pre-commit": [],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jasonHzq/dob-refetch"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "author": "DT",
+  "license": "MIT",
+  "dependencies": {
+    "dependency-inject": "^1.1.0",
+    "dob": "^2.3.8",
+    "dob-react": "^2.1.6"
+  },
+  "files": [
+    "src",
+    "lib",
+    "*.md",
+    "index.ts",
+    "declaration.d.ts"
+  ],
+  "devDependencies": {
+    "@types/node": "^8.0.28",
+    "@types/react": "^15.0.16",
+    "@types/react-dom": "^0.14.23",
+    "pre-commit": "^1.2.2",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-hot-loader": "^1.0.1",
+    "redux": "^3.6.0",
+    "sinon": "^1.17.7",
+    "ts-loader": "^2.0.1",
+    "typescript": "^2.4.2",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
+  }
+}
