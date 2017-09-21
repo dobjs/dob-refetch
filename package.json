@@ -1,8 +1,8 @@
 {
   "name": "dob-refetch",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "",
-  "main": "./index.js",
+  "main": "lib",
   "typings": "./index.ts",
   "scripts": {
     "dev": "tsc -w",
@@ -28,10 +28,9 @@
   },
   "files": [
     "*.md",
+    "lib",
     "index.ts",
-    "index.js",
-    "computedAsyncDO.ts",
-    "computedAsyncDO.js"
+    "computedAsyncDO.ts"
   ],
   "devDependencies": {
     "@types/node": "^8.0.28",

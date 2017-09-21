@@ -7,7 +7,7 @@
     "preserveConstEnums": true,
     "jsx": "react",
     "sourceMap": false,
-    "outDir": ".",
+    "outDir": "lib",
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -19,5 +19,5 @@
     "useCache": true
   },
   "include": ["index.ts", "computedAsyncDO.ts", "demo/index.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "lib"]
 }
