@@ -19,5 +19,5 @@
     "useCache": true
   },
   "include": ["index.ts", "computedAsyncDO.ts", "demo/index.tsx"],
-  "exclude": ["node_modules", "lib"]
+  "exclude": ["node_modules"]
 }

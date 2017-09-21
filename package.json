@@ -1,6 +1,6 @@
 {
   "name": "dob-refetch",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "",
   "main": "./index.js",
   "typings": "./index.ts",
@@ -27,11 +27,11 @@
     "dob-react": "^2.1.6"
   },
   "files": [
-    "src",
-    "lib",
     "*.md",
     "index.ts",
-    "declaration.d.ts"
+    "index.js",
+    "computedAsyncDO.ts",
+    "computedAsyncDO.js"
   ],
   "devDependencies": {
     "@types/node": "^8.0.28",
