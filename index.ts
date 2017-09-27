@@ -11,7 +11,6 @@ export class BaseStore<Props> {
   private getProps() {
     return {} as Props;
   }
-  private init(props: Props) {}
 }
 
 let shouldUseDebug = false;
