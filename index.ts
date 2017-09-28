@@ -57,17 +57,11 @@ function bindStore(inst: any) {
 
         function method(...args: any[]) {
           if (shouldUseDebug) {
-            const argStrs = args.slice(0, originMethod.length).map(arg => {
-              if (typeof arg === 'object') {
-                return JSON.stringify(arg);
-              }
-
-              return String(arg);
-            });
             console.groupCollapsed(
               '%c action ',
               'color: #03A9F4; font-weight: bold',
-              `${inst.constructor.name}.${methodName}(${argStrs.join(', ')})`,
+              `${inst.constructor.name}.${methodName}`,
+              ...(args.slice(0, originMethod.length)),
             );
             console.log(
               '%c prev state    ',
