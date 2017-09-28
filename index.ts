@@ -33,6 +33,17 @@ export class BaseModel<T> {
   [isCycle]() {}
 }
 
+function getValue(inst: any) {
+  return Object.keys(inst).filter(key => {
+    return typeof inst[key] !== 'function';
+  }).reduce((result, key) => {
+    return {
+      ...result,
+      [key]: inst[key],
+    };
+  }, {});
+}
+
 function bindStore(inst: any) {
   const tsMethods: any = Object.getPrototypeOf(inst);
   const methodNames = Object.getOwnPropertyNames(tsMethods);
@@ -61,7 +72,7 @@ function bindStore(inst: any) {
             console.log(
               '%c prev state    ',
               'color: #9E9E9E; font-weight: bold',
-              { ...inst },
+              getValue(inst),
             );
           }
 
@@ -69,9 +80,9 @@ function bindStore(inst: any) {
 
           if (shouldUseDebug) {
             console.log(
-              '%c prev state    ',
+              '%c next state    ',
               'color: #4CAF50; font-weight: bold',
-              { ...inst },
+              getValue(inst),
             );
             console.groupEnd();
           }
