@@ -121,7 +121,9 @@ export default function connect<GlobalState>(
         const globalState = this.context.dyStores;
         const store = storeSelector(globalState);
 
-        store.init(this.props);
+        if (store.init) {
+          store.init(this.props);
+        }
 
         // 让 store 的 this 绑定 store 本身
         bindStore(store);
