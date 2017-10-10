@@ -8,7 +8,7 @@ import { injectFactory, inject } from 'dependency-inject';
 const isCycle = Symbol('isCycle');
 
 export class BaseStore<Props> {
-  private getProps() {
+  protected getProps() {
     return {} as Props;
   }
 }
@@ -24,7 +24,7 @@ export class BaseModel<T> {
   public error: any;
   public data: T;
   private fetchData: () => Promise<T>;
-  constructor(data: any, fetchData?: () => Promise<T>) {
+  constructor(data: any, fetchData?: (...args: any[]) => Promise<T>) {
     this.loading = false;
     this.data = data;
     this.fetchData = fetchData;
@@ -34,14 +34,16 @@ export class BaseModel<T> {
 }
 
 function getValue(inst: any) {
-  return Object.keys(inst).filter(key => {
-    return typeof inst[key] !== 'function';
-  }).reduce((result, key) => {
-    return {
-      ...result,
-      [key]: inst[key],
-    };
-  }, {});
+  return Object.keys(inst)
+    .filter(key => {
+      return typeof inst[key] !== 'function';
+    })
+    .reduce((result, key) => {
+      return {
+        ...result,
+        [key]: inst[key],
+      };
+    }, {});
 }
 
 function bindStore(inst: any) {
@@ -61,7 +63,7 @@ function bindStore(inst: any) {
               '%c action ',
               'color: #03A9F4; font-weight: bold',
               `${inst.constructor.name}.${methodName}`,
-              ...(args.slice(0, originMethod.length)),
+              ...args.slice(0, originMethod.length),
             );
             console.log(
               '%c prev state    ',
