@@ -54,7 +54,7 @@ function bindStore(inst: any) {
   const actionMap = methodNames
     .filter(str => filters.indexOf(str) < 0)
     .forEach(methodName => {
-      if (inst[methodName].bind) {
+      if (inst[methodName] && inst[methodName].bind) {
         const originMethod = inst[methodName];
 
         function method(...args: any[]) {
