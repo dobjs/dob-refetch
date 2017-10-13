@@ -57,7 +57,7 @@ function bindStore(inst: any) {
       if (inst[methodName] && inst[methodName].bind) {
         const originMethod = inst[methodName];
 
-        function method(...args: any[]) {
+        const method = (...args: any[]) => {
           if (shouldUseDebug) {
             console.groupCollapsed(
               '%c action ',
@@ -82,7 +82,7 @@ function bindStore(inst: any) {
             );
             console.groupEnd();
           }
-        }
+        };
 
         inst[methodName] = method;
       }
