@@ -7,8 +7,8 @@
   "scripts": {
     "dev": "tsc -w",
     "build": "tsc",
-    "prepublish": "npm run build && babel lib --out-dir lib",
-    "demo": "webpack-dev-server  --progress --port 4000  --colors --content-base demo --inline --config demo/webpack.config.js",
+    "demo":
+      "webpack-dev-server  --progress --port 4000  --colors --content-base demo --inline --config demo/webpack.config.js",
     "test": "NODE_ENV=test karma start test/karma.conf.js --single-run"
   },
   "pre-commit": [],
@@ -26,19 +26,17 @@
     "dob": "^2.4.0",
     "dob-react": "^2.1.8"
   },
-  "files": [
-    "*.md",
-    "lib",
-    "index.ts",
-    "computedAsyncDO.ts"
-  ],
+  "files": ["*.md", "lib", "index.ts", "computedAsyncDO.ts"],
   "devDependencies": {
-    "babel-cli": "^6.24.0",
-    "babel-preset-es2015": "^6.24.0",
-    "babel-preset-stage-0": "^6.22.0",
+    "@types/antd": "^1.0.0",
     "@types/node": "^8.0.28",
     "@types/react": "^15.0.16",
     "@types/react-dom": "^0.14.23",
+    "antd": "^2.13.6",
+    "babel-cli": "^6.24.0",
+    "babel-preset-es2015": "^6.24.0",
+    "babel-preset-stage-0": "^6.22.0",
+    "classnames": "^2.2.5",
     "pre-commit": "^1.2.2",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",

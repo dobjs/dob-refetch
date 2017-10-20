@@ -7,6 +7,7 @@ module.exports = {
   devtool: '#inline-source-map',
   entry: {
     RealWorld: path.join(__dirname + '/RealWorld/index.tsx'),
+    TodoList: path.join(__dirname + '/TodoList/index.tsx'),
   },
   output: {
     path: __dirname,
@@ -14,10 +15,8 @@ module.exports = {
   },
   plugins: [new webpack.HotModuleReplacementPlugin()],
   resolve: {
-    alias: {
-      'refect-next': path.join(__dirname, '..', 'src/'),
-    },
-    extensions: ['', '.js'],
+    alias: {},
+    extensions: ['', '.tsx', '.ts', '.js', '.jsx'],
   },
 
   stats: {

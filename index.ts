@@ -11,6 +11,14 @@ export class BaseStore<Props> {
   protected getProps() {
     return {} as Props;
   }
+
+  public reset() {
+    const instInitialize = new (this as any).__proto__.constructor();
+
+    Object.keys(instInitialize).forEach(property => {
+      (this as any)[property] = instInitialize[property];
+    });
+  }
 }
 
 let shouldUseDebug = false;
@@ -46,7 +54,7 @@ function getValue(inst: any) {
     }, {});
 }
 
-function bindStore(inst: any) {
+export function bindStore(inst: any) {
   const tsMethods: any = Object.getPrototypeOf(inst);
   const methodNames = Object.getOwnPropertyNames(tsMethods);
   const filters = ['constructor'];
@@ -59,7 +67,7 @@ function bindStore(inst: any) {
 
         const method = (...args: any[]) => {
           if (shouldUseDebug) {
-            console.groupCollapsed(
+            console.log(
               '%c action ',
               'color: #03A9F4; font-weight: bold',
               `${inst.constructor.name}.${methodName}`,
@@ -80,7 +88,6 @@ function bindStore(inst: any) {
               'color: #4CAF50; font-weight: bold',
               getValue(inst),
             );
-            console.groupEnd();
           }
         };
 
@@ -104,7 +111,18 @@ export class Provider extends React.Component<ProviderProps> {
   }
 }
 
-export { inject, observable };
+function DObservable<T extends { new (...args: any[]): {} }>(
+  target: T = {} as any,
+): T {
+  return class extends observable(target) {
+    constructor(...args: any[]) {
+      super(...args);
+      bindStore(this);
+    }
+  };
+}
+
+export { inject, DObservable as observable };
 
 export default function connect<GlobalState>(
   storeSelector: (state: GlobalState) => any,
@@ -127,8 +145,8 @@ export default function connect<GlobalState>(
           store.init(this.props);
         }
 
-        // 让 store 的 this 绑定 store 本身
-        bindStore(store);
+        // // 让 store 的 this 绑定 store 本身
+        // bindStore(store);
 
         store.getProps = () => {
           return this.props;
