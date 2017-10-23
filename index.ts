@@ -15,7 +15,7 @@ export class BaseStore<Props> {
   public reset() {
     const instInitialize = new (this as any).__proto__.constructor();
 
-    Object.keys(instInitialize).forEach(property => {
+    Object.keys(this).forEach(property => {
       (this as any)[property] = instInitialize[property];
     });
   }
