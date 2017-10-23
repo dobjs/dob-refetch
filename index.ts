@@ -16,7 +16,9 @@ export class BaseStore<Props> {
     const instInitialize = new (this as any).__proto__.constructor();
 
     Object.keys(this).forEach(property => {
-      (this as any)[property] = instInitialize[property];
+      if (typeof this[property] !== 'function') {
+        this[property] = instInitialize[property];
+      }
     });
   }
 }
