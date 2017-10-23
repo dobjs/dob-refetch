@@ -122,7 +122,17 @@ function DObservable<T extends { new (...args: any[]): {} }>(
   };
 }
 
-export { inject, DObservable as observable };
+type BaseConstructor<T> = new () => T;
+
+type DictionaryOfConstructors<T> = {
+  [K in keyof T]: BaseConstructor<T[K]> | T[K]
+};
+
+function fixStoreType<T>(stores: DictionaryOfConstructors<T>): T {
+  return (stores as any) as T;
+}
+
+export { inject, DObservable as observable, fixStoreType };
 
 export default function connect<GlobalState>(
   storeSelector: (state: GlobalState) => any,
