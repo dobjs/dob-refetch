@@ -106,7 +106,7 @@ class ProviderProps {
 export class Provider extends React.Component<ProviderProps> {
   render() {
     const finalStore: any = injectFactory(this.props.store);
-    return React.createElement(DobProvider, {
+    return React.createElement(DobProvider as any, {
       ...finalStore,
       children: this.props.children,
     });

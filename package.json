@@ -1,14 +1,13 @@
 {
   "name": "@ali/dob-refetch",
-  "version": "0.1.19",
+  "version": "0.1.21",
   "description": "",
   "main": "lib",
   "typings": "./index.ts",
   "scripts": {
     "dev": "tsc -w",
     "build": "tsc && babel lib --out-dir lib",
-    "demo":
-      "webpack-dev-server  --progress --port 4000  --colors --content-base demo --inline --config demo/webpack.config.js",
+    "demo": "webpack-dev-server  --progress --port 4000  --colors --content-base demo --inline --config demo/webpack.config.js",
     "test": "NODE_ENV=test karma start test/karma.conf.js --single-run"
   },
   "pre-commit": [],
@@ -23,15 +22,20 @@
   "license": "MIT",
   "dependencies": {
     "dependency-inject": "^1.1.0",
-    "dob": "^2.4.14",
-    "dob-react": "^2.3.2"
+    "dob": "^2.4.15",
+    "dob-react": "^2.3.3"
   },
-  "files": ["*.md", "lib", "index.ts", "computedAsyncDO.ts"],
+  "files": [
+    "*.md",
+    "lib",
+    "index.ts",
+    "computedAsyncDO.ts"
+  ],
   "devDependencies": {
     "@types/antd": "^1.0.0",
-    "@types/node": "^8.0.28",
+    "@types/node": "^8.0.46",
     "@types/react": "^15.0.16",
-    "@types/react-dom": "^0.14.23",
+    "@types/react-dom": "^15.0.16",
     "antd": "^2.13.6",
     "babel-cli": "^6.24.0",
     "babel-preset-es2015": "^6.24.0",
