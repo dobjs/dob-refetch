@@ -136,9 +136,31 @@ function fixStoreType<T>(stores: DictionaryOfConstructors<T>): T {
 
 export { inject, DObservable as observable, fixStoreType };
 
+function isReactFunction(obj: any) {
+  if (typeof obj === 'function') {
+    if (
+      (obj.prototype && obj.prototype.render) ||
+      obj.isReactClass ||
+      React.Component.isPrototypeOf(obj)
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+export default function connect(WrappedComponent: any): any;
 export default function connect<GlobalState>(
   storeSelector: (state: GlobalState) => any,
-): any {
+): any;
+export default function connect(target?: any): any {
+  if (isReactFunction(target)) {
+    return DAConnect(target);
+  }
+
+  const storeSelector = target;
+
   return function(WrappedComponent: any): any {
     return class extends React.Component<any, any> {
       static contextTypes: React.ValidationMap<any> = {

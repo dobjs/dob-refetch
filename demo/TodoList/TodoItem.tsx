@@ -38,7 +38,7 @@ export class TodoItemStore extends BaseStore<TodoItemProps> {
   }
 }
 
-@Connect
+@connect
 export default class TodoItem extends React.Component<TodoItemProps, any> {
   render() {
     const { store } = this.props;
