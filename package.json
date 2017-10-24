@@ -1,6 +1,6 @@
 {
   "name": "@ali/dob-refetch",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "description": "",
   "main": "lib",
   "typings": "./index.ts",
