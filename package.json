@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "tsc -w",
     "build": "tsc && babel lib --out-dir lib",
-    "demo": "webpack-dev-server  --progress --port 4000  --colors --content-base demo --inline --config demo/webpack.config.js",
+    "demo":
+      "webpack-dev-server  --progress --port 4000  --colors --content-base demo --inline --config demo/webpack.config.js",
     "test": "NODE_ENV=test karma start test/karma.conf.js --single-run"
   },
   "pre-commit": [],
@@ -22,15 +23,10 @@
   "license": "MIT",
   "dependencies": {
     "dependency-inject": "^1.1.0",
-    "dob": "^2.4.0",
-    "dob-react": "^2.1.8"
+    "dob": "^2.4.14",
+    "dob-react": "^2.3.2"
   },
-  "files": [
-    "*.md",
-    "lib",
-    "index.ts",
-    "computedAsyncDO.ts"
-  ],
+  "files": ["*.md", "lib", "index.ts", "computedAsyncDO.ts"],
   "devDependencies": {
     "@types/antd": "^1.0.0",
     "@types/node": "^8.0.28",
