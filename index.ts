@@ -150,7 +150,11 @@ function isReactFunction(obj: any) {
   return false;
 }
 
-export default function connect(WrappedComponent: any): any;
+export default function connect(
+  target: any,
+  propertyKey?: string,
+  descriptor?: PropertyDescriptor,
+): any;
 export default function connect<GlobalState>(
   storeSelector: (state: GlobalState) => any,
 ): any;
@@ -178,9 +182,6 @@ export default function connect(target?: any): any {
         if (store.init) {
           store.init(this.props);
         }
-
-        // // 让 store 的 this 绑定 store 本身
-        // bindStore(store);
 
         store.getProps = () => {
           return this.props;
