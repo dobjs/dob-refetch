@@ -82,7 +82,7 @@ export function bindStore(inst: any) {
             );
           }
 
-          Action(() => originMethod.apply(inst, args));
+          const result = Action(() => originMethod.apply(inst, args));
 
           if (shouldUseDebug) {
             console.log(
@@ -91,6 +91,8 @@ export function bindStore(inst: any) {
               getValue(inst),
             );
           }
+
+          return result;
         };
 
         inst[methodName] = method;
