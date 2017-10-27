@@ -187,12 +187,14 @@ import connect, {
   BaseStore,
   // 自动请求功能
   BaseModel,
+  // 类似于 combineReducer，但只做类型转换，不做实事。
+  fixStoreType,
 } from 'dob-refetch';
 ```
 
 ## Store 规范
 
-```
+```js
 @observable
 class XStore extends BaseStore<XProps> {
   // 属性区
@@ -201,6 +203,12 @@ class XStore extends BaseStore<XProps> {
   
   // 复杂属性区
   complicatedProp = { a: 'a' };
+  
+  /*
+   * 依赖注入
+   * 因为单实例的应用都会传到 Provider 里。所以所有的单实例都可以用如下方法注入其它单实例。
+   */
+  @inject(AStore) a: AStore;
   
   // get 方法区
   get computedName() {
@@ -236,6 +244,8 @@ class XStore extends BaseStore<XProps> {
 }
 ```
 
+以上属性、方法的排序，可以在 tslint members-order 进行配置。
+
 注意：
 
 * store 中的属性，只能通过调用 store 方法来修改。
@@ -245,15 +255,14 @@ class XStore extends BaseStore<XProps> {
 
 ## Store 单实例
 
-Store 规范不变。如上。但是
-
-
+Store 规范不变。
 
 View 规范如下：
 
 ```js
 @connect<GlobalState>(state => state.a.b)
-
+class View extends Component<Props>{
+}
 ```
 
 
@@ -287,13 +296,16 @@ class Tabs extends BaseStore<TabsProps> {
 }
 
 // 静态全局 Store 树：
-{
+fixStoreType({
   menu: MenuStore,
   header: HeaderStore,
   frame: FrameStore,
   tabs: TabStore
-}
+})
 ```
+
+fixStoreType 只做类型转换。
+fixStoreType 做了一件神奇的事情，转换之前，比如 menu 的类型是一个 Class 。转换之后，它是一个实例。可以通过源码了解一下原理。
 
 ### 规范
 
