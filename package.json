@@ -1,5 +1,5 @@
 {
-  "name": "@ali/dob-refetch",
+  "name": "dob-refetch",
   "version": "0.1.22",
   "description": "",
   "main": "lib",
@@ -7,16 +7,14 @@
   "scripts": {
     "dev": "tsc -w",
     "build": "tsc && babel lib --out-dir lib",
-    "demo": "webpack-dev-server  --progress --port 4000  --colors --content-base demo --inline --config demo/webpack.config.js",
+    "demo":
+      "webpack-dev-server  --progress --port 4000  --colors --content-base demo --inline --config demo/webpack.config.js",
     "test": "NODE_ENV=test karma start test/karma.conf.js --single-run"
   },
   "pre-commit": [],
   "repository": {
     "type": "git",
-    "url": "git@github.com:jasonHzq/dob-refetch"
-  },
-  "publishConfig": {
-    "registry": "http://registry.npm.alibaba-inc.com"
+    "url": "git@github.com:dobjs/dob-refetch"
   },
   "author": "DT",
   "license": "MIT",
@@ -25,12 +23,7 @@
     "dob": "^2.4.15",
     "dob-react": "^2.3.3"
   },
-  "files": [
-    "*.md",
-    "lib",
-    "index.ts",
-    "computedAsyncDO.ts"
-  ],
+  "files": ["*.md", "lib", "index.ts", "computedAsyncDO.ts"],
   "devDependencies": {
     "@types/antd": "^1.0.0",
     "@types/node": "^8.0.46",
