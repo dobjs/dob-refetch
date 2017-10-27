@@ -20,6 +20,7 @@ export class TodoListProps {
 @observable
 export class TodoListStore extends BaseStore<TodoListProps> {
   todoList = [] as TodoItemStore[];
+  status = Status.all;
 
   get leftLength() {
     return this.todoList.filter(item => item.status === Status.active).length;
@@ -30,8 +31,6 @@ export class TodoListStore extends BaseStore<TodoListProps> {
 
     this.todoList.push(todoItem);
   }
-
-  status = Status.all;
 
   toggleStatus(status: Status) {}
 

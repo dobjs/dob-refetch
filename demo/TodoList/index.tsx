@@ -2,14 +2,14 @@ import { AddTodoItemStore } from './AddTodoItem';
 import TodoList, { TodoListStore } from './TodoList';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
-import { Provider } from '../../';
+import { Provider, fixStoreType } from '../../';
 import { StatusBarStore } from './StatusBar';
 
-const globalStore = {
+const globalStore = fixStoreType({
   addTodoItem: AddTodoItemStore,
   todoList: TodoListStore,
   statusBar: StatusBarStore,
-};
+});
 
 export type GlobalState = typeof globalStore;
 
