@@ -1,8 +1,7 @@
 import { observable, Atom, Action } from 'dob';
-import { Connect as DAConnect } from 'dob-react';
+import { Connect as DAConnect, Provider as DobProvider } from 'dob-react';
 import * as React from 'react';
 import { computedAsync } from './computedAsyncDO';
-import { Provider as DobProvider } from 'dob-react';
 import { injectFactory, inject } from 'dependency-inject';
 
 const isCycle = Symbol('isCycle');
