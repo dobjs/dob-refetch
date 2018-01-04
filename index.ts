@@ -1,13 +1,11 @@
-import { observable, Atom, Action } from 'dob';
+import { observable, Atom, Action, inject, combineStores, observe } from 'dob';
 import { Connect as DAConnect, Provider as DobProvider } from 'dob-react';
-import * as React from 'react';
+import { globalState } from 'dependency-inject/built/utils';
 import { computedAsync } from './computedAsyncDO';
-import { injectFactory, inject } from 'dependency-inject';
-
-const isCycle = Symbol('isCycle');
+import * as React from 'react';
 
 export class BaseStore<Props> {
-  protected getProps() {
+  public getProps() {
     return {} as Props;
   }
 
@@ -20,12 +18,12 @@ export class BaseStore<Props> {
       }
     });
   }
-}
 
-let shouldUseDebug = false;
+  public a: string;
 
-export function useDebug() {
-  shouldUseDebug = true;
+  public inject<T>(mapper: (state: any) => T) {
+    return new Injected(mapper) as any as T;
+  }
 }
 
 export class BaseModel<T> {
@@ -38,21 +36,6 @@ export class BaseModel<T> {
     this.data = data;
     this.fetchData = fetchData;
   }
-
-  [isCycle]() {}
-}
-
-function getValue(inst: any) {
-  return Object.keys(inst)
-    .filter(key => {
-      return typeof inst[key] !== 'function';
-    })
-    .reduce((result, key) => {
-      return {
-        ...result,
-        [key]: inst[key],
-      };
-    }, {});
 }
 
 export function bindStore(inst: any) {
@@ -64,37 +47,7 @@ export function bindStore(inst: any) {
     .filter(str => filters.indexOf(str) < 0)
     .forEach(methodName => {
       if (inst[methodName] && inst[methodName].bind) {
-        const originMethod = inst[methodName];
-
-        const method = (...args: any[]) => {
-          if (shouldUseDebug) {
-            console.log(
-              '%c action ',
-              'color: #03A9F4; font-weight: bold',
-              `${inst.constructor.name}.${methodName}`,
-              ...args.slice(0, originMethod.length),
-            );
-            console.log(
-              '%c prev state    ',
-              'color: #9E9E9E; font-weight: bold',
-              getValue(inst),
-            );
-          }
-
-          const result = Action(() => originMethod.apply(inst, args));
-
-          if (shouldUseDebug) {
-            console.log(
-              '%c next state    ',
-              'color: #4CAF50; font-weight: bold',
-              getValue(inst),
-            );
-          }
-
-          return result;
-        };
-
-        inst[methodName] = method;
+        inst[methodName] = inst[methodName].bind(inst);
       }
     });
 }
@@ -106,7 +59,7 @@ class ProviderProps {
 }
 export class Provider extends React.Component<ProviderProps> {
   render() {
-    const finalStore: any = injectFactory(this.props.store);
+    const finalStore: any = combineStores(this.props.store);
     return React.createElement(DobProvider as any, {
       ...finalStore,
       children: this.props.children,
@@ -114,13 +67,63 @@ export class Provider extends React.Component<ProviderProps> {
   }
 }
 
-function DObservable<T extends { new (...args: any[]): {} }>(
+export const bindField = (field: string, autoFetch = true) => (target, propertyKey: string) => {
+  if (!target.bindFields) {
+    target.bindFields = {};
+  }
+  if (!target.autoFetchMap) {
+    target.autoFetchMap = {};
+  }
+  target.bindFields[propertyKey] = field;
+  target.autoFetchMap[propertyKey] = autoFetch;
+}
+
+function handleFetch(promise, target) {
+  Action(() => {
+    target.loading = true
+    target.error = false
+  })
+
+  promise.then(data => {
+    Action(() => {
+      target.data = data;
+      target.loading = false;
+      target.error = false;
+    })
+  }, e => {
+    Action(() => {
+      target.loading = false;
+      target.error = e;
+    })
+  });
+}
+
+function DObservable<T extends { new(...args: any[]): {} }>(
   target: T = {} as any,
 ): T {
   return class extends observable(target) {
+    bindFields: any;
     constructor(...args: any[]) {
       super(...args);
       bindStore(this);
+
+      if (this.bindFields) {
+        const propertyKeys = Object.keys(this.bindFields) || [];
+
+        propertyKeys.forEach(propertyKey => {
+          const bundField = this.bindFields[propertyKey];
+          if (!(this[bundField] instanceof BaseModel)) {
+            throw new Error(`${target.name} 中 ${bundField} 被 ${propertyKey}方法绑定，但不是 BaseModel 的实例`);
+          }
+          const originFetchMethod = this[propertyKey];
+
+          this[propertyKey] = (...args) => {
+            observe(() => {
+              handleFetch(originFetchMethod(...args), this[bundField]);
+            });
+          }
+        });
+      }
     }
   };
 }
@@ -135,7 +138,7 @@ function fixStoreType<T>(stores: DictionaryOfConstructors<T>): T {
   return (stores as any) as T;
 }
 
-export { inject, DObservable as observable, fixStoreType };
+export { inject, DObservable as observable, fixStoreType, globalState };
 
 function isReactFunction(obj: any) {
   if (typeof obj === 'function') {
@@ -149,6 +152,13 @@ function isReactFunction(obj: any) {
   }
 
   return false;
+}
+
+class Injected {
+  mapper
+  constructor(mapper) {
+    this.mapper = mapper;
+  }
 }
 
 export default function connect(
@@ -166,7 +176,7 @@ export default function connect(target?: any): any {
 
   const storeSelector = target;
 
-  return function(WrappedComponent: any): any {
+  return function (WrappedComponent: any): any {
     return class extends React.Component<any, any> {
       static contextTypes: React.ValidationMap<any> = {
         router: React.PropTypes.func.isRequired,
@@ -180,6 +190,13 @@ export default function connect(target?: any): any {
         const globalState = this.context.dyStores;
         const store = storeSelector(globalState);
 
+        Object.keys(store).forEach(propName => {
+          const { [propName]: value } = store;
+          if (value && value.constructor && value.constructor.name === 'Injected') {
+            store[propName] = value.mapper(globalState);
+          }
+        });
+
         if (store.init) {
           store.init(this.props);
         }
@@ -188,22 +205,30 @@ export default function connect(target?: any): any {
           return this.props;
         };
 
+        // store.getState = () => globalState;
+
         // 绑定 refetch
         Object.keys(store).forEach(propName => {
           const baseModel = store[propName];
 
-          if (baseModel && baseModel[isCycle]) {
-            store[propName] = computedAsync<string>(
-              baseModel,
-              baseModel.fetchData.bind(store),
-            );
+          if (baseModel instanceof BaseModel) {
+            if ((baseModel as any).fetchData) {
+              store[propName] = computedAsync(
+                baseModel,
+                (baseModel as any).fetchData.bind(store),
+              );
+            } else if (store.bindFields && store.autoFetchMap) {
+              const fetchName = Object.keys(store).find(key => store.bindFields[key] === propName);
+              if (store.autoFetchMap[fetchName]) {
+                store[fetchName]();
+              }
+            }
           }
         });
 
         // 绑定 store 和 state
         this.FinalComp = DAConnect({
           store,
-          state: globalState,
         })(WrappedComponent);
       }
 
@@ -221,3 +246,4 @@ export default function connect(target?: any): any {
     };
   };
 }
+

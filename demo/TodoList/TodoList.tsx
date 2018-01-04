@@ -4,8 +4,7 @@ import connect, {
   BaseStore,
   Provider,
   observable,
-  useDebug,
-} from '../..';
+} from '../../';
 import TodoItem, { TodoItemStore } from './TodoItem';
 
 import StatusBar from './StatusBar';
@@ -32,9 +31,9 @@ export class TodoListStore extends BaseStore<TodoListProps> {
     this.todoList.push(todoItem);
   }
 
-  toggleStatus(status: Status) {}
+  toggleStatus(status: Status) { }
 
-  setAll() {}
+  setAll() { }
 }
 
 @connect<GlobalState>(state => state.todoList)

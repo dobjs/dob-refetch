@@ -5,10 +5,10 @@ import connect, {
   BaseStore,
   Provider,
   observable,
-  useDebug,
+  fixStoreType,
 } from '../../';
+import { Input } from "antd";
 
-useDebug();
 class AppProps {
   store?: AppStore;
 }
@@ -27,6 +27,12 @@ class AppStore extends BaseStore<AppProps> {
     this.num = this.num + num;
   }
 
+  text = '';
+
+  changeText(text: string) {
+    this.text = text;
+  }
+
   private fetchData() {
     // dependencies;
     const num = this.num;
@@ -36,10 +42,25 @@ class AppStore extends BaseStore<AppProps> {
   data = new BaseModel<string>('', this.fetchData);
 }
 
-const globalState = {
+class OtherStore extends BaseStore<any> { }
+
+const globalState = fixStoreType({
   app: AppStore,
-};
+  other: OtherStore,
+});
 type GlobalState = typeof globalState;
+
+@connect<GlobalState>(state => state.other)
+class Other extends React.Component<any, any> {
+  render() {
+    const { store } = this.props;
+
+    return (
+      <div>
+      </div>
+    );
+  }
+}
 
 @connect<GlobalState>(state => state.app)
 class App extends React.Component<AppProps, any> {
@@ -50,8 +71,10 @@ class App extends React.Component<AppProps, any> {
     return (
       <div>
         num: {store.num}
+        <Input value={store.text} onChange={e => store.changeText(e.target.value)} />
         <button onClick={store.addNum.bind(null, 3)}>addNum</button>
         {data.loading ? 'loading...' : data.data}
+        <Other />
       </div>
     );
   }

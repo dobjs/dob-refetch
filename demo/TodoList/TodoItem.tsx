@@ -4,7 +4,6 @@ import connect, {
   BaseStore,
   Provider,
   observable,
-  useDebug,
 } from '../../';
 import { Status } from './define';
 import { Checkbox } from 'antd';

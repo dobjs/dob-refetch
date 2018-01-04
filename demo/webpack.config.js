@@ -29,7 +29,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
-        include: [__dirname, path.join(__dirname, '..', 'index.ts')],
+        include: [__dirname, path.join(__dirname, '..')],
       },
       {
         test: /\.scss$/,

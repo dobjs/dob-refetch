@@ -1,6 +1,6 @@
 {
   "name": "dob-refetch",
-  "version": "0.1.26",
+  "version": "0.2.1",
   "description": "",
   "main": "lib",
   "typings": "./index.ts",
@@ -16,8 +16,8 @@
   "author": "DT",
   "license": "MIT",
   "dependencies": {
-    "dependency-inject": "1.1.4",
-    "dob": "^2.5.4",
+    "dependency-inject": "1.1.1",
+    "dob": "^2.5.7",
     "dob-react": "^2.4.3"
   },
   "files": [
