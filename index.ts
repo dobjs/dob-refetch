@@ -131,7 +131,7 @@ function DObservable<T extends { new(...args: any[]): {} }>(
 type BaseConstructor<T> = new () => T;
 
 type DictionaryOfConstructors<T> = {
-  [K in keyof T]: BaseConstructor<T[K]> | T[K]
+  [K in keyof T]: BaseConstructor<T[K]> | DictionaryOfConstructors<T[K]>
 };
 
 function fixStoreType<T>(stores: DictionaryOfConstructors<T>): T {
