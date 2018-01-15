@@ -4,6 +4,8 @@ import { globalState } from 'dependency-inject/built/utils';
 import { computedAsync } from './computedAsyncDO';
 import * as React from 'react';
 
+const InjectedSymbol = Symbol('Injected');
+
 export class BaseStore<Props> {
   public getProps() {
     return {} as Props;
@@ -155,6 +157,8 @@ function isReactFunction(obj: any) {
 }
 
 class Injected {
+  [InjectedSymbol]() { }
+
   mapper
   constructor(mapper) {
     this.mapper = mapper;
@@ -192,7 +196,7 @@ export default function connect(target?: any): any {
 
         Object.keys(store).forEach(propName => {
           const { [propName]: value } = store;
-          if (value && value.constructor && value.constructor.name === 'Injected') {
+          if (value && value[InjectedSymbol]) {
             store[propName] = value.mapper(globalState);
           }
         });
