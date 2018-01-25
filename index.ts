@@ -133,7 +133,7 @@ function DObservable<T extends { new (...args: any[]): {} }>(
 
           this[propertyKey] = (...args) => {
             let result = null;
-            observe(async () => {
+            observe(() => {
               result = handleFetch(originFetchMethod(...args), this[bundField]);
             });
 
