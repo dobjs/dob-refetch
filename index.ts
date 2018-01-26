@@ -133,9 +133,9 @@ function DObservable<T extends { new (...args: any[]): {} }>(
 
           this[propertyKey] = (...args) => {
             let result = null;
-            observe(() => {
+            this[bundField].unobserve = observe(() => {
               result = handleFetch(originFetchMethod(...args), this[bundField]);
-            });
+            }).unobserve;
 
             return Promise.resolve(result);
           };
@@ -251,6 +251,22 @@ export default function connect(target?: any): any {
         this.FinalComp = DAConnect({
           store
         })(WrappedComponent);
+      }
+
+      componentWillUnmount() {
+        const globalState = this.context.dyStores;
+        const store = storeSelector(globalState);
+        Object.keys(store).forEach(propName => {
+          const baseModel = store[propName];
+
+          if (baseModel instanceof BaseModel) {
+            if (store.bindFields && store.autoFetchMap) {
+              if (store[propName].unobserve) {
+                store[propName].unobserve();
+              }
+            }
+          }
+        });
       }
 
       render() {
