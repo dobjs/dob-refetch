@@ -129,7 +129,7 @@ function DObservable<T extends { new (...args: any[]): {} }>(
               } 中 ${bundField} 被 ${propertyKey}方法绑定，但不是 BaseModel 的实例`
             );
           }
-          const originFetchMethod = this[propertyKey];
+          const originFetchMethod = this[propertyKey].bind(this);
 
           this[propertyKey] = (...args) => {
             let result = null;
