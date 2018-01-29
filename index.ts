@@ -85,23 +85,23 @@ export const bindField = (field: string, autoFetch = true) => (
 
 function handleFetch(promise, target) {
   Action(() => {
-    target.loading = true;
-    target.error = false;
+    target.$raw.loading = true;
+    target.$raw.error = false;
   });
 
   return Promise.resolve(promise).then(
     data => {
       Action(() => {
-        target.data = data;
-        target.loading = false;
-        target.error = false;
+        target.$raw.data = data;
+        target.$raw.loading = false;
+        target.$raw.error = false;
       });
       return data;
     },
     e => {
       Action(() => {
-        target.loading = false;
-        target.error = e;
+        target.$raw.loading = false;
+        target.$raw.error = e;
       });
       return e;
     }
