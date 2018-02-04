@@ -84,30 +84,32 @@ export const bindField = (field: string, autoFetch = true) => (
 };
 
 function handleFetch(promise, target) {
-  setTimeout(() => {
-    Action(() => {
-      target.loading = true;
-      target.error = false;
-    });
-  });
-
-  return Promise.resolve(promise).then(
-    data => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
       Action(() => {
-        target.data = data;
-        target.loading = false;
+        target.loading = true;
         target.error = false;
       });
-      return data;
-    },
-    e => {
-      Action(() => {
-        target.loading = false;
-        target.error = e;
-      });
-      return e;
-    }
-  );
+
+      Promise.resolve(promise).then(
+        data => {
+          Action(() => {
+            target.data = data;
+            target.loading = false;
+            target.error = false;
+          });
+          resolve(data);
+        },
+        e => {
+          Action(() => {
+            target.loading = false;
+            target.error = e;
+          });
+          reject(e);
+        }
+      );
+    });
+  });
 }
 
 function DObservable<T extends { new (...args: any[]): {} }>(
