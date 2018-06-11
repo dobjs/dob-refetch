@@ -1,14 +1,14 @@
-import * as React from 'react';
+import * as React from "react";
 import connect, {
   BaseModel,
   BaseStore,
   Provider,
-  observable,
-} from '../../';
-import { Status } from './define';
-import { Checkbox } from 'antd';
-import { Connect } from 'dob-react';
-const classNames = require('classnames');
+  observable
+} from "../../src/index";
+import { Status } from "./define";
+import { Checkbox } from "antd";
+import { Connect } from "dob-react";
+const classNames = require("classnames");
 
 export class TodoItemProps {
   store: TodoItemStore;
@@ -17,10 +17,10 @@ export class TodoItemProps {
 @observable
 export class TodoItemStore extends BaseStore<TodoItemProps> {
   status = Status.active;
-  text = '';
+  text = "";
 
   obj = {
-    key: 0,
+    key: 0
   };
 
   constructor(text: string) {
@@ -41,8 +41,8 @@ export class TodoItemStore extends BaseStore<TodoItemProps> {
 export default class TodoItem extends React.Component<TodoItemProps, any> {
   render() {
     const { store } = this.props;
-    const className = classNames('pull-left', {
-      completed: store.status === Status.completed,
+    const className = classNames("pull-left", {
+      completed: store.status === Status.completed
     });
 
     return (

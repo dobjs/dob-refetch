@@ -21,6 +21,6 @@
     "forkChecker": true,
     "useCache": true
   },
-  "include": ["src/index.ts", "src/computedAsyncDO.ts"],
-  "exclude": ["node_modules", "lib"]
+  "include": ["..", "."],
+  "exclude": ["../node_modules/**/*.ts", "../lib"]
 }

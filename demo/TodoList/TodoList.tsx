@@ -1,16 +1,16 @@
-import * as React from 'react';
+import * as React from "react";
 import connect, {
   BaseModel,
   BaseStore,
   Provider,
-  observable,
-} from '../../';
-import TodoItem, { TodoItemStore } from './TodoItem';
+  observable
+} from "../../src/index";
+import TodoItem, { TodoItemStore } from "./TodoItem";
 
-import StatusBar from './StatusBar';
-import AddTodoItem from './AddTodoItem';
-import { Status } from './define';
-import { GlobalState } from './index';
+import StatusBar from "./StatusBar";
+import AddTodoItem from "./AddTodoItem";
+import { Status } from "./define";
+import { GlobalState } from "./index";
 
 export class TodoListProps {
   store?: TodoListStore;
@@ -31,9 +31,9 @@ export class TodoListStore extends BaseStore<TodoListProps> {
     this.todoList.push(todoItem);
   }
 
-  toggleStatus(status: Status) { }
+  toggleStatus(status: Status) {}
 
-  setAll() { }
+  setAll() {}
 }
 
 @connect<GlobalState>(state => state.todoList)

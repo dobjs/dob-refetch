@@ -1,22 +1,21 @@
-import { AddTodoItemStore } from './AddTodoItem';
-import TodoList, { TodoListStore } from './TodoList';
-import * as ReactDOM from 'react-dom';
-import * as React from 'react';
-import { Provider, fixStoreType, BaseStore } from '../../';
-import { StatusBarStore } from './StatusBar';
-import { globalState } from '_dob@2.5.7@dob';
+import { AddTodoItemStore } from "./AddTodoItem";
+import TodoList, { TodoListStore } from "./TodoList";
+import * as ReactDOM from "react-dom";
+import * as React from "react";
+import { Provider, BaseStore, ReturnState } from "../../src/index";
+import { StatusBarStore } from "./StatusBar";
 
-const globalStore = fixStoreType({
+const globalStore = {
   addTodoItem: AddTodoItemStore,
   todoList: TodoListStore,
-  statusBar: StatusBarStore,
-});
+  statusBar: StatusBarStore
+};
 
-export type GlobalState = typeof globalStore;
+export type GlobalState = ReturnState<typeof globalStore>;
 
 ReactDOM.render(
   <Provider store={globalStore}>
     <TodoList />
   </Provider>,
-  document.getElementById('app'),
+  document.getElementById("app")
 );

@@ -3,7 +3,7 @@
   "version": "0.2.11",
   "description": "",
   "main": "lib",
-  "typings": "./index.ts",
+  "typings": "./src/index.ts",
   "scripts": {
     "dev": "tsc -w",
     "build": "tsc && babel lib --out-dir lib",
@@ -16,9 +16,9 @@
   "author": "DT",
   "license": "MIT",
   "dependencies": {
-    "dependency-inject": "1.1.1",
-    "dob": "^2.5.7",
-    "dob-react": "^2.4.3"
+    "dependency-inject": "^1.1.6",
+    "dob": "^2.5.9",
+    "dob-react": "^2.4.15"
   },
   "files": [
     "*.md",
@@ -42,7 +42,7 @@
     "redux": "^3.6.0",
     "sinon": "^1.17.7",
     "ts-loader": "^2.0.1",
-    "typescript": "^2.4.2",
+    "typescript": "^2.9.1",
     "webpack": "^1.14.0",
     "webpack-dev-server": "^1.16.2"
   }

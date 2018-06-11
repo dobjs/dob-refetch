@@ -1,6 +1,5 @@
-import connect, { BaseStore } from "../../index";
+import connect, { BaseStore } from "../../src/index";
 import { GlobalState } from "./index";
-import { globalState } from "dependency-inject/built/utils";
 
 export class MyBaseStore<Props> extends BaseStore<Props> {
   inject<T>(mapper: (state: GlobalState) => T) {
@@ -9,5 +8,8 @@ export class MyBaseStore<Props> extends BaseStore<Props> {
 }
 
 export function myConnect(state: GlobalState, ...args) {
-  return connect(state, ...args);
+  return connect(
+    state,
+    ...args
+  );
 }

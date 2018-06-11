@@ -1,46 +1,50 @@
-var path = require('path');
-var webpack = require('webpack');
+var path = require("path");
+var webpack = require("webpack");
 
 module.exports = {
   context: __dirname,
   debug: true,
-  devtool: '#inline-source-map',
+  devtool: "#inline-source-map",
   entry: {
-    RealWorld: path.join(__dirname + '/RealWorld/index.tsx'),
-    TodoList: path.join(__dirname + '/TodoList/index.tsx'),
+    RealWorld: path.join(__dirname + "/RealWorld/index.tsx"),
+    TodoList: path.join(__dirname + "/TodoList/index.tsx")
   },
   output: {
     path: __dirname,
-    filename: '[name]/build.js',
+    filename: "[name]/build.js"
   },
   plugins: [new webpack.HotModuleReplacementPlugin()],
   resolve: {
     alias: {},
-    extensions: ['', '.tsx', '.ts', '.js', '.jsx'],
+    extensions: ["", ".tsx", ".ts", ".js", ".jsx"]
   },
 
   stats: {
     colors: true,
-    chunks: false,
+    chunks: false
   },
 
   module: {
     loaders: [
       {
         test: /\.tsx?$/,
-        loader: 'ts-loader',
-        include: [__dirname, path.join(__dirname, '..')],
+        loader: "ts-loader",
+        include: [__dirname, path.join(__dirname, "..")],
+        exclude: ["../node_modules"],
+        options: {
+          configFile: path.resolve(__dirname, "tsconfig.json")
+        }
       },
       {
         test: /\.scss$/,
-        loaders: ['style', 'css', 'sass'],
-        include: [__dirname, path.join(__dirname, '..', 'node_modules')],
+        loaders: ["style", "css", "sass"],
+        include: [__dirname, path.join(__dirname, "..", "node_modules")]
       },
       {
         test: /\.css$/,
-        loaders: ['style-loader', 'css-loader'],
-        include: [__dirname, path.join(__dirname, '..', 'node_modules')],
-      },
-    ],
-  },
+        loaders: ["style-loader", "css-loader"],
+        include: [__dirname, path.join(__dirname, "..", "node_modules")]
+      }
+    ]
+  }
 };

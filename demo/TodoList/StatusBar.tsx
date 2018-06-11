@@ -1,8 +1,13 @@
-import * as React from 'react';
-import connect, { BaseModel, BaseStore, Provider, observable } from '../../';
-import { Status } from './define';
-const classNames = require('classnames');
-import { GlobalState } from './index';
+import * as React from "react";
+import connect, {
+  BaseModel,
+  BaseStore,
+  Provider,
+  observable
+} from "../../src/index";
+import { Status } from "./define";
+const classNames = require("classnames");
+import { GlobalState } from "./index";
 
 export class StatusBarProps {
   store?: StatusBarStore;
@@ -21,17 +26,17 @@ export class StatusBarStore extends BaseStore<StatusBarProps> {
 
 const STATUS_ITEMS = [
   {
-    text: 'All',
-    value: Status.all,
+    text: "All",
+    value: Status.all
   },
   {
-    text: 'Active',
-    value: Status.active,
+    text: "Active",
+    value: Status.active
   },
   {
-    text: 'Completed',
-    value: Status.completed,
-  },
+    text: "Completed",
+    value: Status.completed
+  }
 ];
 
 @connect<GlobalState>(state => state.statusBar)
@@ -45,7 +50,7 @@ export default class StatusBar extends React.Component<StatusBarProps, any> {
 
   renderStatusItem(item: typeof STATUS_ITEMS[0]) {
     const { store } = this.props;
-    const className = classNames('status-item', store.status);
+    const className = classNames("status-item", store.status);
 
     return (
       <div

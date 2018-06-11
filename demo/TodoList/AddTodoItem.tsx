@@ -1,8 +1,14 @@
-import * as React from 'react';
-import connect, { BaseModel, BaseStore, Provider, observable, bindField } from '../../';
-import { Input } from 'antd';
-import { GlobalState } from './index';
-import { MyBaseStore } from './utils';
+import * as React from "react";
+import connect, {
+  BaseModel,
+  BaseStore,
+  Provider,
+  observable,
+  bindField
+} from "../../src/index";
+import { Input } from "antd";
+import { GlobalState } from "./index";
+import { MyBaseStore } from "./utils";
 
 export class AddTodoItemProps {
   store?: AddTodoItemStore;
@@ -17,11 +23,11 @@ function mockFetch(data: any, ttl = 300) {
 }
 
 @observable
-export class AddTodoItemStore extends MyBaseStore<AddTodoItemProps> {
-  text = '';
+export class AddTodoItemStore extends BaseStore<AddTodoItemProps> {
+  text = "";
 
   clearText() {
-    this.text = '';
+    this.text = "";
   }
 
   changeText(text: string) {
@@ -34,25 +40,24 @@ export class AddTodoItemStore extends MyBaseStore<AddTodoItemProps> {
     this.num = this.num + 1;
   }
 
-  todoListStore = this.inject(state => state.todoList);
+  todoListStore = this.inject((state: GlobalState) => state.todoList);
 
-  @bindField('data')
-  fetchData(la = '32') {
+  @bindField("data")
+  fetchData(la = "32") {
     // dependencies;
     const text = this.num;
     const length = this.todoListStore.todoList.length;
 
-    return mockFetch('I am response data' + la);
+    return mockFetch("I am response data" + la);
   }
-  data = new BaseModel<string>('');
+  data = new BaseModel("");
 }
 
 @connect<GlobalState>(state => state.addTodoItem)
 export default class AddTodoItem extends React.Component<
-AddTodoItemProps,
-any
+  AddTodoItemProps,
+  any
 > {
-
   handlePressEnter() {
     const { store, onAddItem } = this.props;
 
@@ -70,7 +75,7 @@ any
         <span className="toggle-item" onClick={this.props.onSetAll}>
           toggle
         </span>
-        {data.loading ? 'loading...' : data.data}
+        {data.loading ? "loading..." : data.data}
         <button onClick={store.changeNum}>sdf</button>
         <Input
           value={store.text}

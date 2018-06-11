@@ -1,12 +1,13 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 import connect, {
   BaseModel,
   BaseStore,
   Provider,
   observable,
-  fixStoreType,
-} from '../../';
+  bindField,
+  ReturnState
+} from "../../src/index";
 import { Input } from "antd";
 
 class AppProps {
@@ -27,38 +28,36 @@ class AppStore extends BaseStore<AppProps> {
     this.num = this.num + num;
   }
 
-  text = '';
+  text = "";
 
   changeText(text: string) {
     this.text = text;
   }
 
+  @bindField("data")
   private fetchData() {
     // dependencies;
     const num = this.num;
 
-    return mockFetch('I am response data');
+    return mockFetch("I am response data");
   }
-  data = new BaseModel<string>('', this.fetchData);
+  data = new BaseModel("");
 }
 
-class OtherStore extends BaseStore<any> { }
+class OtherStore extends BaseStore<any> {}
 
-const globalState = fixStoreType({
+const globalState = {
   app: AppStore,
-  other: OtherStore,
-});
-type GlobalState = typeof globalState;
+  other: OtherStore
+};
+type GlobalState = ReturnState<typeof globalState>;
 
 @connect<GlobalState>(state => state.other)
 class Other extends React.Component<any, any> {
   render() {
     const { store } = this.props;
 
-    return (
-      <div>
-      </div>
-    );
+    return <div />;
   }
 }
 
@@ -71,9 +70,12 @@ class App extends React.Component<AppProps, any> {
     return (
       <div>
         num: {store.num}
-        <Input value={store.text} onChange={e => store.changeText(e.target.value)} />
+        <Input
+          value={store.text}
+          onChange={e => store.changeText(e.target.value)}
+        />
         <button onClick={store.addNum.bind(null, 3)}>addNum</button>
-        {data.loading ? 'loading...' : data.data}
+        {data.loading ? "loading..." : data.data}
         <Other />
       </div>
     );
@@ -86,5 +88,5 @@ ReactDOM.render(
       <App />
     </div>
   </Provider>,
-  document.getElementById('app'),
+  document.getElementById("app")
 );

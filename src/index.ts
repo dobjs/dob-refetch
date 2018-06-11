@@ -1,6 +1,5 @@
 import { observable, Atom, Action, inject, combineStores, observe } from "dob";
 import { Connect as DAConnect, Provider as DobProvider } from "dob-react";
-import { globalState } from "dependency-inject/built/utils";
 import { computedAsync } from "./computedAsyncDO";
 import * as React from "react";
 
@@ -33,7 +32,7 @@ export class BaseModel<T> {
   public error: any;
   public data: T;
   private fetchData: () => Promise<T>;
-  constructor(data: any, fetchData?: (...args: any[]) => Promise<T>) {
+  constructor(data: T, fetchData?: (...args: any[]) => Promise<T>) {
     this.loading = false;
     this.data = data;
     this.fetchData = fetchData;
@@ -155,11 +154,13 @@ type DictionaryOfConstructors<T> = {
   [K in keyof T]: BaseConstructor<T[K]> | DictionaryOfConstructors<T[K]>
 };
 
-function fixStoreType<T>(stores: DictionaryOfConstructors<T>): T {
-  return (stores as any) as T;
-}
+type ReturnState<StoreMap> = {
+  [key in keyof StoreMap]: StoreMap[key] extends new (...args: any[]) => infer R
+    ? R
+    : ReturnState<StoreMap[key]>
+};
 
-export { inject, DObservable as observable, fixStoreType, globalState };
+export { inject, DObservable as observable, ReturnState };
 
 function isReactFunction(obj: any) {
   if (typeof obj === "function") {
