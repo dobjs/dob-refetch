@@ -1,9 +1,10 @@
-import { observable, Atom, Action, inject, combineStores, observe } from "dob";
-import { Connect as DAConnect, Provider as DobProvider } from "dob-react";
-import { computedAsync } from "./computedAsyncDO";
-import * as React from "react";
+import { observable, Atom, Action, inject, combineStores, observe } from 'dob';
+import { Connect as DAConnect, Provider as DobProvider } from 'dob-react';
+import { computedAsync } from './computedAsyncDO';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 
-const InjectedSymbol = Symbol("Injected");
+const InjectedSymbol = Symbol('Injected');
 
 export class BaseStore<Props> {
   public getProps() {
@@ -14,7 +15,7 @@ export class BaseStore<Props> {
     const instInitialize = new (this as any).__proto__.constructor();
 
     Object.keys(this).forEach(property => {
-      if (typeof (this as any)[property] !== "function") {
+      if (typeof (this as any)[property] !== 'function') {
         (this as any)[property] = instInitialize[property];
       }
     });
@@ -42,7 +43,7 @@ export class BaseModel<T> {
 export function bindStore(inst: any) {
   const tsMethods: any = Object.getPrototypeOf(inst);
   const methodNames = Object.getOwnPropertyNames(tsMethods);
-  const filters = ["constructor"];
+  const filters = ['constructor'];
 
   const actionMap = methodNames
     .filter(str => filters.indexOf(str) < 0)
@@ -163,7 +164,7 @@ type ReturnState<StoreMap> = {
 export { inject, DObservable as observable, ReturnState };
 
 function isReactFunction(obj: any) {
-  if (typeof obj === "function") {
+  if (typeof obj === 'function') {
     if (
       (obj.prototype && obj.prototype.render) ||
       obj.isReactClass ||
@@ -203,9 +204,9 @@ export default function connect(target?: any): any {
   return function(WrappedComponent: any): any {
     return class extends React.Component<any, any> {
       static contextTypes: React.ValidationMap<any> = {
-        router: React.PropTypes.func.isRequired,
-        location: React.PropTypes.object.isRequired,
-        dyStores: React.PropTypes.object
+        router: PropTypes.func.isRequired,
+        location: PropTypes.object.isRequired,
+        dyStores: PropTypes.object
       };
       store: any;
       FinalComp: any;
